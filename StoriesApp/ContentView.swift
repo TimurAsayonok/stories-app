@@ -5,9 +5,14 @@
 
 import SwiftUI
 import StoriesAppHomePageFeature
+import StoriesAppCore
 
 struct ContentView: View {
     var body: some View {
-        StoriesHomePageView()
+        StoriesHomePageView(
+            viewModel: StoriesHomePageViewModel(
+                persistenceService: StoriesPersistence()
+            )
+        )
     }
 }

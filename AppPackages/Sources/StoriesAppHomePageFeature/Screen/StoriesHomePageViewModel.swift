@@ -1,26 +1,41 @@
 import Foundation
 import Combine
+import StoriesAppModels
 import StoriesAppStoriesFeature
 import StoriesAppUserListFeature
+import StoriesAppCore
 
-class StoriesHomePageViewModel: ObservableObject {
+public class StoriesHomePageViewModel: ObservableObject {
     @Published var userList: [User] = []
     @Published var userToPresent: User?
     @Published var onPresentStoriesView = false
     var storiesViewModel: StoriesViewModel?
+    var userListViewModel: UserListViewModel {
+        .init(users: userList, persistenceService: persistenceService, onUserTap: presentStories(for:))
+    }
     var selectedPage = 0
     private var pages: [Page] = []
     private var cancellables = Set<AnyCancellable>()
-    private let service: ApiServiceProtocol
+    private let service: ApiServiceProtocol = ApiService()
+    private let persistenceService: StoriesPersistence
     
-    init(service: ApiServiceProtocol = ApiService()) {
-        self.service = service
+    public init(persistenceService: StoriesPersistence) {
+        self.persistenceService = persistenceService
+    }
+    
+    func loadOrFetchUsers() {
+        if let persistedUsers = persistenceService.loadUserList(), !persistedUsers.isEmpty {
+            userList = persistedUsers
+        } else {
+            fetchHomePage()
+        }
     }
 
-    func fetchHomePage() {
+    func fetchHomePage(pageNumber: Int = 0) {
         do {
             pages = try service.getUsersList().pages
-            userList = pages[0].users
+            userList = pages[pageNumber].users
+            persistenceService.persistUserList(userList)
         } catch {
             // add error handling here
             print("Error fetching user list: \(error)")
@@ -31,6 +46,7 @@ class StoriesHomePageViewModel: ObservableObject {
         userToPresent = user
         storiesViewModel = StoriesViewModel(
             user: user,
+            persistenceService: persistenceService,
             presentUser: presentUser
         )
         onPresentStoriesView = true
@@ -60,6 +76,7 @@ class StoriesHomePageViewModel: ObservableObject {
             userToPresent = nextUser
             storiesViewModel = StoriesViewModel(
                 user: nextUser,
+                persistenceService: persistenceService,
                 presentUser: presentUser
             )
         }

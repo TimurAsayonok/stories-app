@@ -1,11 +1,11 @@
 import SwiftUI
 import Combine
 import StoriesAppComponents
+import StoriesAppModels
 
 public struct StoriesView: View {
     @ObservedObject private var viewModel: StoriesViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var currentIndex: Int = 0
     @State private var dragOffset: CGSize = .zero
 
     public init(viewModel: StoriesViewModel) {
@@ -15,13 +15,13 @@ public struct StoriesView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             contentView()
-            tappableArea()
+            VStack {
+                tappableArea()
+                Spacer()
+            }
             tabBarView()
         }
         .background(Color.black.ignoresSafeArea())
-        .onChange(of: viewModel.stories) { _ in
-            currentIndex = 0 // Reset to first story when user changes
-        }
         .gesture(
             DragGesture()
                 .onChanged { value in
@@ -41,17 +41,11 @@ public struct StoriesView: View {
                     } else if abs(horizontal) > abs(vertical) {
                         // Only allow left/right navigation
                         if horizontal < -50 {
-                            if currentIndex < viewModel.stories.count - 1 {
-                                withAnimation { currentIndex += 1 }
-                            } else {
-                                viewModel.onUserChanged(to: .next)
+                            withAnimation {
+                                viewModel.moveToNextStory()
                             }
                         } else if horizontal > 50 {
-                            if currentIndex > 0 {
-                                withAnimation { currentIndex -= 1 }
-                            } else {
-                                viewModel.onUserChanged(to: .previous)
-                            }
+                            withAnimation { viewModel.moveToPreviousStory() }
                         }
                         withAnimation { dragOffset = .zero }
                     } else {
@@ -64,12 +58,15 @@ public struct StoriesView: View {
 
 extension StoriesView {
     func contentView() -> some View {
-        TabView(selection: $currentIndex) {
+        TabView(selection: $viewModel.indexToPresent) {
             ForEach(Array(viewModel.stories.enumerated()), id: \.offset) { index, story in
                 VStack {
                     if let url = URL(string: story.imageURL) {
                         RemoteImageView(url: url)
                     }
+                    Spacer()
+                    likeButton(for: story)
+                        .padding(.bottom, 32)
                 }
                 .tag(index)
             }
@@ -87,11 +84,8 @@ extension StoriesView {
             Color.clear
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    if currentIndex > 0 {
-                        withAnimation { currentIndex -= 1 }
-                    } else {
-                        // At first story, go to previous user
-                        viewModel.onUserChanged(to: .previous)
+                    withAnimation {
+                        viewModel.moveToPreviousStory()
                     }
                 }
             Color.clear
@@ -99,15 +93,12 @@ extension StoriesView {
             Color.clear
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    if currentIndex < viewModel.stories.count - 1 {
-                        withAnimation { currentIndex += 1 }
-                    } else {
-                        // At last story, go to next user
-                        viewModel.onUserChanged(to: .next)
+                    withAnimation {
+                        viewModel.moveToNextStory()
                     }
                 }
         }
-        .ignoresSafeArea()
+        .padding(.bottom, 100)
     }
 }
 
@@ -117,10 +108,10 @@ extension StoriesView {
             HStack(spacing: 4) {
                 ForEach(0..<viewModel.stories.count, id: \.self) { index in
                     Rectangle()
-                        .fill(index <= currentIndex ? Color.white : Color.white.opacity(0.3))
+                        .fill(index <= viewModel.indexToPresent ? Color.white : Color.white.opacity(0.3))
                         .frame(height: 3)
                         .cornerRadius(2)
-                        .animation(.linear(duration: 0.2), value: currentIndex)
+                        .animation(.linear(duration: 0.2), value: viewModel.indexToPresent)
                 }
             }
 
@@ -149,5 +140,24 @@ extension StoriesView {
             Color.black.opacity(0.02)
                 .blur(radius: 0.5)
         )
+    }
+}
+
+extension StoriesView {
+    func likeButton(for story: Story) -> some View {
+        HStack {
+            Spacer()
+            Button(action: {
+                viewModel.toggleLike(for: story)
+            }) {
+                Image(systemName: story.isLiked ? "heart.fill" : "heart")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(story.isLiked ? .red : .white)
+                    .padding()
+                    .background(Color.black.opacity(0.5))
+                    .clipShape(Circle())
+            }
+        }
     }
 }

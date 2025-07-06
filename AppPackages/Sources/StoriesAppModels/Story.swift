@@ -10,9 +10,10 @@ public struct Story: Codable, Identifiable, Hashable {
 
 public extension Story {
     static func mocked(for userId: Int) -> Story {
-        .init(
-            id: .init(),
-            imageURL: "https://picsum.photos/400/700?random=\(Int.random(in: 1...10))",
+        let randomImageId = Int.random(in: 0...userId + 10)
+        return Story(
+            id: UUID(),
+            imageURL: "https://picsum.photos/id/\(randomImageId)/400/700",
             userId: userId
         )
     }

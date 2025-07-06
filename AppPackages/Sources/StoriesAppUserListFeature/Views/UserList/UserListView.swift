@@ -1,28 +1,34 @@
 import SwiftUI
 import StoriesAppComponents
+import StoriesAppModels
 
 public struct UserListView: View {
-    let users: [User]
-    let onUserTap: (User) -> Void
-    
-    public init(users: [User], onUserTap: @escaping (User) -> Void) {
-        self.users = users
-        self.onUserTap = onUserTap
+    @ObservedObject private var viewModel: UserListViewModel
+
+    public init(viewModel: UserListViewModel) {
+        self.viewModel = viewModel
     }
 
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 16) {
-                ForEach(users) { user in
+                ForEach(viewModel.users) { user in
+                    let hasUnseen = viewModel.isSeen(user)
                     VStack {
                         ZStack {
                             Circle()
                                 .strokeBorder(
-                                    LinearGradient(
-                                        colors: [Color.purple, Color.orange, Color.red, Color.yellow],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ),
+                                    hasUnseen ?
+                                        LinearGradient(
+                                            colors: [Color.purple, Color.orange, Color.red, Color.yellow],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                        : LinearGradient(
+                                            colors: [Color.white],
+                                            startPoint: .top,
+                                            endPoint: .bottom
+                                        ),
                                     lineWidth: 4
                                 )
                                 .frame(width: 80, height: 80)
@@ -30,6 +36,7 @@ public struct UserListView: View {
                                 RemoteImageView(url: profileUrl)
                                     .frame(width: 72, height: 72)
                                     .clipShape(Circle())
+                                    .opacity(hasUnseen ? 1.0 : 0.5)
                             }
                         }
                         Text(user.name)
@@ -37,7 +44,7 @@ public struct UserListView: View {
                             .lineLimit(1)
                     }
                     .onTapGesture {
-                        onUserTap(user)
+                        viewModel.onUserTap(user)
                     }
                 }
             }

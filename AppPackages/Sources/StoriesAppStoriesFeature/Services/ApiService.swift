@@ -1,5 +1,6 @@
 import Foundation
 import StoriesAppCore
+import StoriesAppModels
 
 // MARK: ApiService
 // Contains api service methods

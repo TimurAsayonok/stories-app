@@ -71,7 +71,8 @@ enum Module: String, CaseIterable {
                 dependencies: [
                     .init(.LocalizationStrings),
                     .init(.StoriesAppCore),
-                    .init(.StoriesAppComponents)
+                    .init(.StoriesAppComponents),
+                    .init(.StoriesAppModels)
                 ]
             )
         case .StoriesAppServices:
@@ -90,7 +91,8 @@ enum Module: String, CaseIterable {
                     .init(.LocalizationStrings),
                     .init(.StoriesAppCore),
                     .init(.StoriesAppStoriesFeature),
-                    .init(.StoriesAppComponents)
+                    .init(.StoriesAppComponents),
+                    .init(.StoriesAppModels)
                 ],
                 resources: [
                     .process("Resources/users.json")
@@ -99,7 +101,7 @@ enum Module: String, CaseIterable {
         case .StoriesAppUserListFeature:
             return .target(
                 name: rawValue,
-                dependencies: []
+                dependencies: [.init(.StoriesAppModels)]
             )
         }
     }

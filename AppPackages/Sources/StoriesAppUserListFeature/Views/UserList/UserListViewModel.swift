@@ -1,9 +1,23 @@
 import Foundation
-import Combine
+import StoriesAppModels
+import StoriesAppCore
 
-final class UserListViewModel: ObservableObject {
+public class UserListViewModel: ObservableObject {    
     @Published var users: [User] = []
+    let onUserTap: (User) -> Void
+    private var persistenceService: StoriesPersistence
 
-    func fetchUsers() {
+    public init(
+        users: [User],
+        persistenceService: StoriesPersistence,
+        onUserTap: @escaping (User) -> Void
+    ) {
+        self.users = users
+        self.onUserTap = onUserTap
+        self.persistenceService = persistenceService
+    }
+    
+    func isSeen(_ user: User) -> Bool {
+        return persistenceService.hasUnseenStories(for: user.id)
     }
 }

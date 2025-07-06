@@ -105,6 +105,7 @@ enum Module: String, CaseIterable {
             )
         }
     }
+    
     var testName: String {
         rawValue + "Tests"
     }

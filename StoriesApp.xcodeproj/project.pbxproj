@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		717E48C72E1AAE010046D424 /* StoriesAppModels in Frameworks */ = {isa = PBXBuildFile; productRef = 717E48C62E1AAE010046D424 /* StoriesAppModels */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		71A84FA82E1AA0620033BC57 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		717E48952E1AA82F0046D424 /* AppPackages */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppPackages; sourceTree = "<group>"; };
 		71A84F962E1AA0610033BC57 /* StoriesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoriesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A84FA72E1AA0620033BC57 /* StoriesAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoriesAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A84FB12E1AA0620033BC57 /* StoriesAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoriesAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				717E48C72E1AAE010046D424 /* StoriesAppModels in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +78,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		717E489B2E1AAB530046D424 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		71A84F8D2E1AA0610033BC57 = {
 			isa = PBXGroup;
 			children = (
+				717E48952E1AA82F0046D424 /* AppPackages */,
 				71A84F982E1AA0610033BC57 /* StoriesApp */,
 				71A84FAA2E1AA0620033BC57 /* StoriesAppTests */,
 				71A84FB42E1AA0620033BC57 /* StoriesAppUITests */,
+				717E489B2E1AAB530046D424 /* Frameworks */,
 				71A84F972E1AA0610033BC57 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +127,8 @@
 			);
 			name = StoriesApp;
 			packageProductDependencies = (
+				717E489C2E1AAB530046D424 /* StoriesApp */,
+				717E48C62E1AAE010046D424 /* StoriesAppModels */,
 			);
 			productName = StoriesApp;
 			productReference = 71A84F962E1AA0610033BC57 /* StoriesApp.app */;
@@ -195,6 +212,9 @@
 			);
 			mainGroup = 71A84F8D2E1AA0610033BC57;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				717E48C52E1AAE010046D424 /* XCLocalSwiftPackageReference "AppPackages" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 71A84F972E1AA0610033BC57 /* Products */;
 			projectDirPath = "";
@@ -591,6 +611,24 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		717E48C52E1AAE010046D424 /* XCLocalSwiftPackageReference "AppPackages" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = AppPackages;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		717E489C2E1AAB530046D424 /* StoriesApp */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StoriesApp;
+		};
+		717E48C62E1AAE010046D424 /* StoriesAppModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StoriesAppModels;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 71A84F8E2E1AA0610033BC57 /* Project object */;
 }

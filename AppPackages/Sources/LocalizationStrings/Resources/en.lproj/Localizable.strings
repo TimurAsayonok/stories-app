@@ -1,0 +1,42 @@
+/* 
+  Localizable.strings
+  WorldOfPayback
+
+  Created by Tsimur Asayonak on 12/22/23.
+  
+*/
+
+// MARK: - Welcome View
+"welcome_screen_title" = "Welcome";
+"welcome_screen_message" = "This test application is created for completing a test assignment. To begin, press the button: ";
+"start_button_title" = "Lets start!";
+
+// MARK: - Transaction List View
+"transaction_list_title" = "Transactions";
+"transaction_list_total_amount" = "Total Amount:";
+"transaction_list_empty_title" = "List is Empty";
+"transaction_list_empty_description" = "Try to refresh the list or try later";
+
+// MARK: - Filters View
+"filter_sort_by_title" = "Sort by date:";
+"filter_sort_date_descending" = "Descending";
+"filter_sort_date_ascending" = "Ascending";
+"filter_category_title" = "Category:";
+
+// MARK: - Buttons
+"close_button" = "Close";
+"clear_button" = "Clear";
+"cancel_button" = "Cancel";
+"ok_button" = "OK";
+
+// MARK: - Alert
+"alert_title" = "Ups!";
+
+// MARK: - Network Unavailable
+"no_internet_connection_title" = "No Internet Connection";
+"no_internet_connection_description" = "Please check your connection and try again.";
+
+// MARK: - TAB bar items
+"tab_discover" = "Discover";
+"tab_scan" = "Scan";
+"tab_profile" = "Profile";

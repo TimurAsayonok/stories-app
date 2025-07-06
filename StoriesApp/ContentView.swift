@@ -2,10 +2,9 @@
 //  ContentView.swift
 //  StoriesApp
 //
-//  Created by Valentyna Chemer on 06/07/2025.
-//
 
 import SwiftUI
+import StoriesAppModels
 
 struct ContentView: View {
     var body: some View {
@@ -17,8 +16,4 @@ struct ContentView: View {
         }
         .padding()
     }
-}
-
-#Preview {
-    ContentView()
 }

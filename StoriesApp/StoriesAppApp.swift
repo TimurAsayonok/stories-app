@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import StoriesAppCore
 
 @main
 struct StoriesAppApp: App {

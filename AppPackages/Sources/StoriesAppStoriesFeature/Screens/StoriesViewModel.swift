@@ -10,17 +10,19 @@ public class StoriesViewModel: ObservableObject {
     @Published var stories: [Story] = []
     @Published var indexToPresent: Int = 0
     let user: User
-    private let service: ApiServiceProtocol = ApiService()
+    private let apiService: ApiServiceProtocol
     private var presentUser: (Direction) -> Void
     private var persistenceService: StoriesPersistence
 
     public init(
         user: User,
+        apiService: ApiServiceProtocol,
         persistenceService: StoriesPersistence,
         presentUser: @escaping (Direction) -> Void
     ) {
         self.user = user
         self.presentUser = presentUser
+        self.apiService = apiService
         self.persistenceService = persistenceService
         loadOrFetchStories()
     }
@@ -35,7 +37,7 @@ public class StoriesViewModel: ObservableObject {
     }
 
     func fetchStories() {
-        let fetchedStories = service.getStrories(for: user.id)
+        let fetchedStories = apiService.getStrories(for: user.id)
         stories = fetchedStories
         persistenceService.persistStories(fetchedStories, for: user.id)
     }
@@ -45,7 +47,6 @@ public class StoriesViewModel: ObservableObject {
     }
     
     func moveToNextStory() {
-        markStoryAsSeen(index: indexToPresent)
         if indexToPresent < stories.count - 1 {
             indexToPresent += 1
         } else {

@@ -10,7 +10,7 @@ public protocol ApiServiceProtocol {
 public struct ApiService: ApiServiceProtocol {
     let jsonLoader: LocalJSONLoader
 
-    init(jsonLoader: LocalJSONLoader = LocalJSONLoader()) {
+    public init(jsonLoader: LocalJSONLoader) {
         self.jsonLoader = jsonLoader
     }
 

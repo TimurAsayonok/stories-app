@@ -11,41 +11,67 @@ public class StoriesHomePageViewModel: ObservableObject {
     @Published var onPresentStoriesView = false
     var storiesViewModel: StoriesViewModel?
     var userListViewModel: UserListViewModel {
-        .init(users: userList, persistenceService: persistenceService, onUserTap: presentStories(for:))
+        .init(
+            users: userList,
+            persistenceService: persistenceService,
+            onUserTap: presentStories(for:),
+            loadMoreStories: loadMoreStories
+        )
     }
-    var selectedPage = 0
+    var pageIndex = 0
     private var pages: [Page] = []
     private var cancellables = Set<AnyCancellable>()
-    private let service: ApiServiceProtocol = ApiService()
+    private let service: ApiServiceProtocol
+    private let storiesApiService: StoriesAppStoriesFeature.ApiServiceProtocol
     private let persistenceService: StoriesPersistence
     
-    public init(persistenceService: StoriesPersistence) {
+    public init(
+        persistenceService: StoriesPersistence,
+        service: ApiServiceProtocol,
+        storiesApiService: StoriesAppStoriesFeature.ApiServiceProtocol
+    ) {
         self.persistenceService = persistenceService
+        self.storiesApiService = storiesApiService
+        self.service = service
     }
     
     func loadOrFetchUsers() {
         if let persistedUsers = persistenceService.loadUserList(), !persistedUsers.isEmpty {
             userList = persistedUsers
         } else {
-            fetchHomePage()
+            fetchPages()
+        }
+    }
+    
+    func loadMoreStories(_ loading: Bool) {
+        if loading {
+            if pageIndex < pages.count - 1 {
+                pageIndex += 1
+                updateUserList(for: pageIndex)
+            }
         }
     }
 
-    func fetchHomePage(pageNumber: Int = 0) {
+    func fetchPages() {
         do {
             pages = try service.getUsersList().pages
-            userList = pages[pageNumber].users
-            persistenceService.persistUserList(userList)
+            updateUserList(for: 0)
         } catch {
             // add error handling here
             print("Error fetching user list: \(error)")
         }
     }
     
+    private func updateUserList(for page: Int) {
+        userList += pages[page].users
+        persistenceService.persistUserList(userList)
+    }
+    
     func presentStories(for user: User) {
         userToPresent = user
         storiesViewModel = StoriesViewModel(
             user: user,
+            apiService: storiesApiService,
             persistenceService: persistenceService,
             presentUser: presentUser
         )
@@ -76,6 +102,7 @@ public class StoriesHomePageViewModel: ObservableObject {
             userToPresent = nextUser
             storiesViewModel = StoriesViewModel(
                 user: nextUser,
+                apiService: storiesApiService,
                 persistenceService: persistenceService,
                 presentUser: presentUser
             )

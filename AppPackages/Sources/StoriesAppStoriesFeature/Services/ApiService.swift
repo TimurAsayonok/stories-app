@@ -9,6 +9,7 @@ public protocol ApiServiceProtocol {
 }
 
 public struct ApiService: ApiServiceProtocol {
+    public init() {}
     public func getStrories(for userId: Int) -> [Story] {
         return [
             Story.mocked(for: userId),

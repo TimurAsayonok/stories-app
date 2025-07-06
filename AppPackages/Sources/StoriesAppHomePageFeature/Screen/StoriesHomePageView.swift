@@ -18,7 +18,7 @@ public struct StoriesHomePageView: View {
                 .bold()
                 .padding(.leading, 16)
             UserListView(viewModel: viewModel.userListViewModel)
-                             
+                .frame(height: 100)
             Spacer()
         }
         .fullScreenCover(isPresented: $viewModel.onPresentStoriesView) {

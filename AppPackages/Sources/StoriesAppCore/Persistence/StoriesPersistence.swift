@@ -36,7 +36,8 @@ public class StoriesPersistence {
     }
     
     public func hasUnseenStories(for userId: Int) -> Bool {
-        guard let stories = loadStories(for: userId) else { return false }
-        return stories.contains { !$0.isSeen }
+        guard let stories = loadStories(for: userId) else { return true }
+        print("Stories: \(stories)")
+        return stories.contains { $0.isSeen == false }
     }
 }

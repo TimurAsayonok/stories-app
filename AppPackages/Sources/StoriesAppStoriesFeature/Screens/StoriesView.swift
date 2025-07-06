@@ -74,6 +74,12 @@ extension StoriesView {
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .ignoresSafeArea()
         .offset(y: dragOffset.height)
+        .onAppear() {
+            viewModel.markStoryAsSeen(index: viewModel.indexToPresent)
+        }
+        .onChange(of: viewModel.indexToPresent) { newIndex in
+            viewModel.markStoryAsSeen(index: newIndex)
+        }
     }
 }
     
@@ -152,7 +158,7 @@ extension StoriesView {
             }) {
                 Image(systemName: story.isLiked ? "heart.fill" : "heart")
                     .resizable()
-                    .frame(width: 20, height: 20)
+                    .frame(width: 24, height: 20)
                     .foregroundColor(story.isLiked ? .red : .white)
                     .padding()
                     .background(Color.black.opacity(0.5))

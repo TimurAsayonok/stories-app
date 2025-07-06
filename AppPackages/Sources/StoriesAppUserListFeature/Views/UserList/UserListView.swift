@@ -11,7 +11,7 @@ public struct UserListView: View {
 
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 16) {
+            LazyHStack(spacing: 16) {
                 ForEach(viewModel.users) { user in
                     let hasUnseen = viewModel.isSeen(user)
                     VStack {
@@ -46,10 +46,12 @@ public struct UserListView: View {
                     .onTapGesture {
                         viewModel.onUserTap(user)
                     }
+                    .onAppear {
+                        viewModel.onUserViewAppeared(user.id)
+                    }
                 }
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 8)
         }
     }
 }

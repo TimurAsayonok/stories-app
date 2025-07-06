@@ -1,6 +1,6 @@
 import Foundation
 
-public struct User: Codable, Hashable, Identifiable {
+public struct User: Codable, Hashable, Identifiable, Sendable {
     public let id: Int
     public let name: String
     public let profilePictureURL: URL?

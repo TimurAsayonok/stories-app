@@ -1,5 +1,5 @@
 import Foundation
 
-public struct UserList: Codable {
+public struct UserList: Codable, Sendable {
     public let pages: [Page]
 }

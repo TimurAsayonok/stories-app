@@ -11,7 +11,8 @@ enum Module: String, CaseIterable {
     case StoriesAppModels
     case StoriesAppStoriesFeature
     case StoriesAppServices
-    case 
+    case StoriesAppHomePageFeature
+    case StoriesAppUserListFeature
     
     static let staticModules: [Module] = [.StoriesAppModule]
     
@@ -34,7 +35,9 @@ enum Module: String, CaseIterable {
                     .init(.StoriesAppCore),
                     .init(.StoriesAppModels),
                     .init(.StoriesAppStoriesFeature),
-                    .init(.StoriesAppServices)
+                    .init(.StoriesAppServices),
+                    .init(.StoriesAppHomePageFeature),
+                    .init(.StoriesAppUserListFeature)
                 ]
             )
         case .LocalizationStrings:
@@ -66,7 +69,9 @@ enum Module: String, CaseIterable {
             return .target(
                 name: rawValue,
                 dependencies: [
-                    .init(.LocalizationStrings)
+                    .init(.LocalizationStrings),
+                    .init(.StoriesAppCore),
+                    .init(.StoriesAppComponents)
                 ]
             )
         case .StoriesAppServices:
@@ -76,6 +81,25 @@ enum Module: String, CaseIterable {
                     .init(.StoriesAppModels),
                     .init(.LocalizationStrings)
                 ]
+            )
+        case .StoriesAppHomePageFeature:
+            return .target(
+                name: rawValue,
+                dependencies: [
+                    .init(.StoriesAppUserListFeature),
+                    .init(.LocalizationStrings),
+                    .init(.StoriesAppCore),
+                    .init(.StoriesAppStoriesFeature),
+                    .init(.StoriesAppComponents)
+                ],
+                resources: [
+                    .process("Resources/users.json")
+                ]
+            )
+        case .StoriesAppUserListFeature:
+            return .target(
+                name: rawValue,
+                dependencies: []
             )
         }
     }
@@ -97,19 +121,11 @@ enum Module: String, CaseIterable {
     }
 }
 
-//enum Dependency: String, CaseIterable {
-//    var packageDependency: Package.Dependency?
-//    var packageName: String = ""
-//}
-
 extension Target.Dependency {
     init(_ module: Module) {
         self.init(stringLiteral: module.rawValue)
     }
 }
-//    init(_ dependency: Dependency) {
-//        self = .product(name: dependency.rawValue, package: dependency.packageName)
-//    }
 
 let package = Package(
     name: "AppPackages",

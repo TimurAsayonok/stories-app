@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		717E48C72E1AAE010046D424 /* StoriesAppModels in Frameworks */ = {isa = PBXBuildFile; productRef = 717E48C62E1AAE010046D424 /* StoriesAppModels */; };
+		717E48C92E1AC1E80046D424 /* StoriesAppModule in Frameworks */ = {isa = PBXBuildFile; productRef = 717E48C82E1AC1E80046D424 /* StoriesAppModule */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				717E48C72E1AAE010046D424 /* StoriesAppModels in Frameworks */,
+				717E48C92E1AC1E80046D424 /* StoriesAppModule in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,7 +128,7 @@
 			name = StoriesApp;
 			packageProductDependencies = (
 				717E489C2E1AAB530046D424 /* StoriesApp */,
-				717E48C62E1AAE010046D424 /* StoriesAppModels */,
+				717E48C82E1AC1E80046D424 /* StoriesAppModule */,
 			);
 			productName = StoriesApp;
 			productReference = 71A84F962E1AA0610033BC57 /* StoriesApp.app */;
@@ -624,9 +624,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = StoriesApp;
 		};
-		717E48C62E1AAE010046D424 /* StoriesAppModels */ = {
+		717E48C82E1AC1E80046D424 /* StoriesAppModule */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = StoriesAppModels;
+			package = 717E48C52E1AAE010046D424 /* XCLocalSwiftPackageReference "AppPackages" */;
+			productName = StoriesAppModule;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

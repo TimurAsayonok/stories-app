@@ -1,11 +1,19 @@
 import SwiftUI
+import StoriesAppComponents
 
 public struct UserListView: View {
     let users: [User]
-    var body: some View {
+    let onUserTap: (User) -> Void
+    
+    public init(users: [User], onUserTap: @escaping (User) -> Void) {
+        self.users = users
+        self.onUserTap = onUserTap
+    }
+
+    public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 16) {
-                ForEach(viewModel.users) { user in
+                ForEach(users) { user in
                     VStack {
                         ZStack {
                             Circle()
@@ -18,15 +26,18 @@ public struct UserListView: View {
                                     lineWidth: 4
                                 )
                                 .frame(width: 80, height: 80)
-                            Image(user.avatar)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 72, height: 72)
-                                .clipShape(Circle())
+                            if let profileUrl = user.profilePictureURL {
+                                RemoteImageView(url: profileUrl)
+                                    .frame(width: 72, height: 72)
+                                    .clipShape(Circle())
+                            }
                         }
                         Text(user.name)
                             .font(.caption)
                             .lineLimit(1)
+                    }
+                    .onTapGesture {
+                        onUserTap(user)
                     }
                 }
             }

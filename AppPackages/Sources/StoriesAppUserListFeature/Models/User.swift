@@ -1,7 +1,7 @@
 import Foundation
 
 public struct User: Codable, Hashable, Identifiable {
-    public let id: String
+    public let id: Int
     public let name: String
     public let profilePictureURL: URL?
     

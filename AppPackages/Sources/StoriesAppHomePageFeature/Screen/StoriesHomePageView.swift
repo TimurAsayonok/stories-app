@@ -1,6 +1,8 @@
 import SwiftUI
+import StoriesAppUserListFeature
+import StoriesAppStoriesFeature
 
-public struct HomePageView: View {
+public struct StoriesHomePageView: View {
     @StateObject private var viewModel = StoriesHomePageViewModel()
 
     public init() {}
@@ -11,10 +13,22 @@ public struct HomePageView: View {
                 .font(.title)
                 .bold()
                 .padding(.leading, 16)
-            UserListView(users: viewModel.users)
+            UserListView(
+                users: viewModel.userList,
+                onUserTap: {
+                    user in viewModel.presentStories(for: user)
+                }
+            )
+                             
+            Spacer()
         }
         .onAppear {
-            viewModel.fetchUsers()
+            viewModel.fetchHomePage()
+        }
+        .fullScreenCover(isPresented: $viewModel.onPresentStoriesView) {
+            if let viewModel = viewModel.storiesViewModel {
+                StoriesView(viewModel: viewModel)
+            }
         }
     }
 }
